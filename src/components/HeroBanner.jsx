@@ -14,8 +14,8 @@ export const HeroBanner = ({ onSelectGoods, onSelectServices }) => {
       <div className="relative z-10 max-w-3xl mx-auto text-center space-y-6">
         {/* Boutique Tag */}
         <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full text-xs font-semibold text-rose-200">
-          <Smartphone className="w-4 h-4 text-emerald-400" />
-          <span>{t('mpesaBadgeText')} • Safaricom Daraja API Sandbox</span>
+          <Globe className="w-4 h-4 text-emerald-400" />
+          <span>{t('mpesaBadgeText')}</span>
         </div>
 
         {/* Main Title */}
@@ -47,12 +47,12 @@ export const HeroBanner = ({ onSelectGoods, onSelectServices }) => {
         {/* Trust Badges Bar */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 border-t border-white/10 text-xs text-rose-200/80 font-medium max-w-2xl mx-auto">
           <div className="flex items-center justify-center gap-1.5">
-            <Smartphone className="w-4 h-4 text-mpesa-green" />
-            <span>Daraja STK Push</span>
+            <Globe className="w-4 h-4 text-emerald-300" />
+            <span>Kiswahili ↔ English</span>
           </div>
           <div className="flex items-center justify-center gap-1.5">
             <Truck className="w-4 h-4 text-rose-300" />
-            <span>Fast Delivery</span>
+            <span>Same-Day Delivery</span>
           </div>
           <div className="flex items-center justify-center gap-1.5">
             <Heart className="w-4 h-4 text-amber-300" />

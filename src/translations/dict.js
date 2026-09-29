@@ -2,7 +2,7 @@ export const translations = {
   en: {
     // Header & Navigation
     brandName: "ZariBoutique",
-    brandSubtitle: "Luxury Fashion, Beauty & Glamour • Eldoret",
+    brandSubtitle: "Bilingual Fashion & Beauty • Kiswahili ↔ English",
     searchPlaceholder: "Search clothes, shoes, hair, lipsticks, bags...",
     allCategories: "All Categories",
     goods: "Fashion & Beauty Goods",
@@ -16,10 +16,10 @@ export const translations = {
     
     // Hero Banner
     heroTitle: "Chic Fashion, Hair, Shoes & Beauty Essentials in Eldoret",
-    heroSubtitle: "Shop luxury Ankara dresses, stiletto heels, virgin hair, lipstick sets & book glam stylists in Eldoret with instant M-PESA payment.",
+    heroSubtitle: "Explore luxury Ankara dresses, stiletto heels, virgin hair, lipstick sets & glam services in Eldoret — seamlessly translated between Kiswahili and English.",
     shopGoodsBtn: "Shop Fashion & Beauty",
     bookServiceBtn: "Book Glam Session",
-    mpesaBadgeText: "Powered by M-PESA STK Push",
+    mpesaBadgeText: "🌍 Bilingual Kiswahili ↔ English Shopping",
 
     // Filter & Sorting
     filterTitle: "Filter Boutique",
@@ -134,7 +134,7 @@ export const translations = {
   sw: {
     // Header & Navigation
     brandName: "ZariBoutique",
-    brandSubtitle: "Duka la Nguo, Viatu na Urembo • Eldoret",
+    brandSubtitle: "Duka la Kisasa la Nguo na Urembo • Kiswahili ↔ Kiingereza",
     searchPlaceholder: "Tafuta nguo, viatu, nywele, wanja, mikoba...",
     allCategories: "Aina Zote",
     goods: "Nguo na Vitu vya Urembo",
@@ -148,10 +148,10 @@ export const translations = {
 
     // Hero Banner
     heroTitle: "Nguo za Kisasa, Nywele, Viatu na Urembo Mjini Eldoret",
-    heroSubtitle: "Nunua magauni ya Ankara, viatu vya kisigino, nywele halisi, wanja za midomo na uweke miadi ya wataalamu Eldoret kwa M-PESA.",
+    heroSubtitle: "Nunua magauni ya Ankara, viatu vya kisigino, nywele halisi, wanja za midomo na uweke miadi Eldoret kwa Kiswahili na Kiingereza bila kikwazo.",
     shopGoodsBtn: "Tazama Nguo na Viatu",
     bookServiceBtn: "Weka Miadi ya Urembo",
-    mpesaBadgeText: "Inatumia M-PESA STK Push",
+    mpesaBadgeText: "🌍 Ununuzi kwa Kiswahili na Kiingereza",
 
     // Filter & Sorting
     filterTitle: "Chuja Nguo na Vitu",

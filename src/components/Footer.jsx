@@ -20,8 +20,8 @@ export const Footer = () => {
           </div>
           <p className="leading-relaxed text-gray-400">{t('footerDesc')}</p>
           <div className="flex items-center gap-2 text-rose-400 font-semibold pt-1">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>M-PESA Daraja API Sandbox Verified</span>
+            <Globe className="w-4 h-4 text-emerald-400" />
+            <span>Bilingual Kiswahili ↔ English E-Commerce Platform</span>
           </div>
         </div>
 
@@ -87,15 +87,13 @@ export const Footer = () => {
         <div className="space-y-1">
           <p>© 2026 ZariBoutique Eldoret. {t('allRightsReserved')}</p>
           <p className="text-rose-400 font-semibold text-xs">
-            Project Created by <span className="text-white font-bold underline decoration-rose-500">Margret Mukundi and Immaculate Kimani </span>
+            Project Created by <span className="text-white font-bold underline decoration-rose-500">Margret Mukundi and Immaculate Kimani</span>
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <span className="bg-rose-950 text-rose-300 border border-rose-800 px-2.5 py-1 rounded font-mono font-bold">
-            M-PESA TILL: 987654
-          </span>
-          <span className="bg-emerald-950 text-emerald-300 border border-emerald-800 px-2.5 py-1 rounded font-mono font-bold">
-            DARAJA SANDBOX PAYBILL: 174379
+          <span className="bg-rose-950 text-rose-300 border border-rose-800 px-3 py-1 rounded font-semibold flex items-center gap-1.5">
+            <Globe className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Kiswahili ↔ English Dual Language Mode</span>
           </span>
         </div>
       </div>
