@@ -163,14 +163,14 @@ app.post('/api/mpesa/stkpush', async (req, res) => {
       });
 
     } catch (err) {
-      const errorMsg = err.response?.data?.errorMessage || err.response?.statusText || err.message;
-      console.warn(`[Safaricom API Rejected Request (${err.response?.status || 400})]:`, errorMsg);
+      const errorMsg = err.response?.data?.errorMessage || err.response?.data?.ResponseDescription || err.response?.statusText || err.message;
+      console.warn(`[Safaricom API Rejected Request (${err.response?.status || 400})]:`, errorMsg, err.response?.data);
 
-      return res.status(400).json({
+      return res.json({
         success: false,
         errorType: 'SAFARICOM_KEY_REJECTED',
         statusCode: err.response?.status || 400,
-        message: `Safaricom API server rejected Consumer Key (${consumerKey.slice(0, 8)}...) with HTTP ${err.response?.status || 400}. Please verify Consumer Key & Consumer Secret on developer.safaricom.co.ke`,
+        message: errorMsg || `Safaricom API rejected request with status ${err.response?.status || 400}. Please ensure MPESA_CONSUMER_KEY & MPESA_CONSUMER_SECRET are added under Render Environment Variables.`,
         phoneNumber: formattedPhone,
         transaction: txRecord
       });

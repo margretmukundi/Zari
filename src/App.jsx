@@ -127,8 +127,8 @@ export function App() {
       const data = await response.json();
       setIsSendingStk(false);
 
-      if (!response.ok && data.errorType === 'SAFARICOM_KEY_REJECTED') {
-        setSafaricomKeyError(data.message);
+      if (!data.success) {
+        setSafaricomKeyError(data.message || 'M-PESA transaction request failed.');
         setCheckoutRequestId(data.transaction?.id);
         setIsLivePushStatusOpen(true);
         return;
