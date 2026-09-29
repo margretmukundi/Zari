@@ -76,8 +76,8 @@ app.post('/api/mpesa/stkpush', async (req, res) => {
   }
 
   const checkoutRequestID = `ws_CO_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
-  const consumerKey = (process.env.MPESA_CONSUMER_KEY || '').trim();
-  const consumerSecret = (process.env.MPESA_CONSUMER_SECRET || '').trim();
+  const consumerKey = (process.env.MPESA_CONSUMER_KEY || 'K5ymsCmIddGcBJeNp0fxLkqTphHuOkd2nAU0SGtr1xrLoRAA').trim();
+  const consumerSecret = (process.env.MPESA_CONSUMER_SECRET || 'yd0HZGBIoESxSJCjwq6MFceiiPCek6XgJD5NHiG2r1yORGkyaT5ZLE5z0uOSc4H4K').trim();
 
   const isProd = process.env.MPESA_ENVIRONMENT === 'production';
   const darajaBaseUrl = isProd
@@ -122,6 +122,12 @@ app.post('/api/mpesa/stkpush', async (req, res) => {
       const cleanAccRef = (accountReference || 'ZariBoutique').replace(/[^a-zA-Z0-9]/g, '').slice(0, 12) || 'ZariBoutique';
       const cleanDesc = (transactionDesc || 'ZariPayment').replace(/[^a-zA-Z0-9]/g, '').slice(0, 13) || 'ZariPayment';
 
+      // Ensure Callback URL has full /api/mpesa/callback path for Safaricom compliance
+      let rawCallback = (process.env.CALLBACK_URL || 'https://zari-ydla.onrender.com/api/mpesa/callback').trim();
+      if (!rawCallback.includes('/api/mpesa/callback')) {
+        rawCallback = rawCallback.replace(/\/+$/, '') + '/api/mpesa/callback';
+      }
+
       const stkPayload = {
         BusinessShortCode: shortCode,
         Password: password,
@@ -131,7 +137,7 @@ app.post('/api/mpesa/stkpush', async (req, res) => {
         PartyA: formattedPhone,
         PartyB: shortCode,
         PhoneNumber: formattedPhone,
-        CallBackURL: process.env.CALLBACK_URL || 'https://mydomain.com/api/mpesa/callback',
+        CallBackURL: rawCallback,
         AccountReference: cleanAccRef,
         TransactionDesc: cleanDesc,
       };
