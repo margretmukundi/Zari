@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { Heart, Smartphone, Shield, Truck } from 'lucide-react';
+import { Heart, Smartphone, Shield, Truck, Globe } from 'lucide-react';
 
 export const HeroBanner = ({ onSelectGoods, onSelectServices }) => {
   const { t } = useLanguage();
