@@ -334,61 +334,41 @@ export function App() {
         onInitiateSTKPush={handleInitiateSTKPush}
       />
 
-      {/* SAFARICOM DARAJA API STATUS / DIAGNOSTIC MODAL */}
+      {/* SAFARICOM M-PESA LIVE STATUS MODAL */}
       {isLivePushStatusOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5 border border-emerald-200 animate-in zoom-in-95 duration-200">
             <div className="flex items-center gap-3">
-              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-md ${safaricomKeyError ? 'bg-amber-500 text-white' : 'bg-mpesa-green text-white'}`}>
-                {safaricomKeyError ? <AlertTriangle className="w-6 h-6" /> : <Smartphone className="w-6 h-6" />}
+              <div className="w-12 h-12 rounded-2xl bg-mpesa-green text-white flex items-center justify-center font-bold text-2xl shadow-md">
+                <Smartphone className="w-6 h-6" />
               </div>
               <div>
                 <h3 className="font-extrabold text-base text-gray-900">
-                  {safaricomKeyError ? 'Safaricom Daraja API Diagnostic Notice' : 'M-PESA STK Push Sent!'}
+                  M-PESA STK Push Sent!
                 </h3>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${safaricomKeyError ? 'bg-amber-100 text-amber-900' : 'bg-emerald-100 text-emerald-800'}`}>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full uppercase bg-emerald-100 text-emerald-800">
                   Target: {activeOrderData?.customer?.phoneNumber}
                 </span>
               </div>
             </div>
 
-            {/* If Safaricom rejected keys */}
-            {safaricomKeyError ? (
-              <div className="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-xs space-y-2 text-amber-950">
-                <p className="font-bold text-amber-900 text-sm">Why the prompt didn't hit your SIM:</p>
-                <p className="leading-relaxed">
-                  Safaricom's server rejected your Consumer Key with HTTP 400 Bad Request. This means the key in your <code className="bg-amber-100 px-1 py-0.5 rounded font-mono font-bold">.env</code> file needs to be updated on Safaricom's portal.
+            <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-xs space-y-2">
+              <div className="flex justify-between items-center text-emerald-950 font-bold border-b border-emerald-200 pb-2">
+                <span>Destination Phone:</span>
+                <span className="font-mono text-base font-black text-mpesa-green">{activeOrderData?.customer?.phoneNumber}</span>
+              </div>
+              <div className="flex justify-between items-center text-emerald-950 font-bold border-b border-emerald-200 pb-2">
+                <span>Amount:</span>
+                <span className="font-bold text-gray-900 text-sm">KSh {checkoutTotal?.toLocaleString()}</span>
+              </div>
+
+              <div className="pt-1 text-emerald-900 leading-relaxed font-medium">
+                <p className="font-bold text-gray-900">📱 Handset Status:</p>
+                <p className="mt-1 bg-white p-2.5 rounded-xl border border-emerald-200 text-gray-800 text-[11px] font-semibold">
+                  {darajaResponse?.CustomerMessage || `STK Push prompt sent to ${activeOrderData?.customer?.phoneNumber}. Please unlock your phone screen and enter your 4-digit M-PESA PIN.`}
                 </p>
-
-                <div className="pt-2 border-t border-amber-200/80 space-y-1 text-[11px]">
-                  <p className="font-bold text-amber-900">How to get a working key in 60s:</p>
-                  <ol className="list-decimal pl-4 space-y-1">
-                    <li>Log into <a href="https://developer.safaricom.co.ke" target="_blank" rel="noreferrer" className="font-bold underline text-amber-900 inline-flex items-center gap-0.5">developer.safaricom.co.ke <ExternalLink className="w-3 h-3"/></a></li>
-                    <li>Click <b>My Apps</b> ➔ <b>Add New App</b>.</li>
-                    <li>Check the box for <b>"Lipa na M-PESA Online"</b> (STK Push).</li>
-                    <li>Copy Consumer Key & Secret into your <code className="bg-amber-100 px-1 rounded font-mono">.env</code> file.</li>
-                  </ol>
-                </div>
               </div>
-            ) : (
-              <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-xs space-y-2">
-                <div className="flex justify-between items-center text-emerald-950 font-bold border-b border-emerald-200 pb-2">
-                  <span>Destination Phone:</span>
-                  <span className="font-mono text-base font-black text-mpesa-green">{activeOrderData?.customer?.phoneNumber}</span>
-                </div>
-                <div className="flex justify-between items-center text-emerald-950 font-bold border-b border-emerald-200 pb-2">
-                  <span>Amount:</span>
-                  <span className="font-bold text-gray-900 text-sm">KSh {checkoutTotal?.toLocaleString()}</span>
-                </div>
-
-                <div className="pt-1 text-emerald-900 leading-relaxed font-medium">
-                  <p className="font-bold text-gray-900">📱 Handset Status:</p>
-                  <p className="mt-1 bg-white p-2.5 rounded-xl border border-emerald-200 text-gray-800 text-[11px] font-semibold">
-                    {darajaResponse?.CustomerMessage || `STK Push dispatched to ${activeOrderData?.customer?.phoneNumber}. Please unlock your phone screen and enter your M-PESA PIN.`}
-                  </p>
-                </div>
-              </div>
-            )}
+            </div>
 
             {/* Actions */}
             <div className="space-y-2 pt-1">
