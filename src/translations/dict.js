@@ -13,13 +13,13 @@ export const translations = {
     swahili: "Kiswahili",
     english: "English",
     currency: "KSh",
-    
+
     // Hero Banner
     heroTitle: "Chic Fashion, Hair, Shoes & Beauty Essentials in Eldoret",
-    heroSubtitle: "Explore luxury Ankara dresses, stiletto heels, virgin hair, lipstick sets & glam services in Eldoret — seamlessly translated between Kiswahili and English.",
+    heroSubtitle: "Explore luxury Ankara dresses, stiletto heels, virgin hair, lipstick sets & glam services in Eldoret seamlessly translated between Kiswahili and English.",
     shopGoodsBtn: "Shop Fashion & Beauty",
     bookServiceBtn: "Book Glam Session",
-    mpesaBadgeText: "🌍 Bilingual Kiswahili ↔ English Shopping",
+    mpesaBadgeText: "Bilingual Kiswahili ↔ English Shopping",
 
     // Filter & Sorting
     filterTitle: "Filter Boutique",
@@ -64,7 +64,7 @@ export const translations = {
     emailPlaceholder: "wanjiku@example.com",
     phoneNumber: "M-PESA Phone Number",
     phoneHelp: "Enter your Safaricom M-PESA phone number (07XX / 01XX or 254...)",
-    
+
     deliveryType: "Eldoret Delivery Address or Appointment Date",
     shippingAddress: "Eldoret Delivery Address / Estate",
     shippingAddressPlaceholder: "e.g. Uganda Road / Elgon View / Kapsoya, Eldoret",
@@ -96,7 +96,7 @@ export const translations = {
     simSuccessBtn: "Simulate Correct PIN Entry",
     simCancelBtn: "Simulate User Cancelled",
     simFailBtn: "Simulate Insufficient Funds",
-    
+
     stkSuccessTitle: "Payment Successful!",
     stkSuccessMsg: "M-PESA payment verified. Transaction code: {code}",
     stkFailedTitle: "Payment Unsuccessful",
