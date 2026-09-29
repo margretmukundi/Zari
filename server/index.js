@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import axios from 'axios';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 dotenv.config();
@@ -18,6 +19,11 @@ app.use(express.json());
 
 // Serve static frontend files
 const projectRoot = path.join(__dirname, '..');
+const distPath = path.join(projectRoot, 'dist');
+
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+}
 app.use(express.static(projectRoot));
 
 // In-memory transactions store
@@ -211,7 +217,11 @@ app.post('/api/mpesa/complete-tx', (req, res) => {
   res.status(404).json({ error: 'Transaction not found' });
 });
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
+  const distIndex = path.join(distPath, 'index.html');
+  if (fs.existsSync(distIndex)) {
+    return res.sendFile(distIndex);
+  }
   res.sendFile(path.join(projectRoot, 'standalone_demo.html'));
 });
 
