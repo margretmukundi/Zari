@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ZariBoutique Eldoret - Fashion, Shoes, Hair & Lipsticks with M-PESA</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mpesa: {
+              green: '#00A859',
+              darkgreen: '#008746',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- React & Babel CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .font-serif { font-family: 'Playfair Display', serif; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #fff1f2; }
+    ::-webkit-scrollbar-thumb { background: #fda4af; border-radius: 9999px; }
+  </style>
+</head>
+<body class="bg-rose-50/20 text-slate-900 antialiased">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    // --- TRANSLATIONS DICTIONARY ---
+    const translations = {
+      en: {
+        brandName: "ZariBoutique",
+        brandSubtitle: "Luxury Fashion, Beauty & Glamour • Eldoret",
+        searchPlaceholder: "Search clothes, shoes, hair, lipsticks, bags...",
+        allCategories: "All Collections",
+        goods: "Fashion & Beauty",
+        services: "Glam Services",
+        cart: "Cart",
+        myOrders: "My Orders",
+        language: "Language",
+        heroTitle: "Chic Fashion, Hair, Shoes & Beauty Essentials in Eldoret",
+        heroSubtitle: "Shop luxury Ankara dresses, stiletto heels, virgin hair, lipstick sets & book glam stylists in Eldoret with instant M-PESA payment.",
+        shopGoodsBtn: "Shop Fashion & Beauty",
+        bookServiceBtn: "Book Glam Session",
+        mpesaBadgeText: "Powered by M-PESA STK Push",
+        typeAll: "All Collection",
+        typeGoods: "Clothes, Shoes & Beauty",
+        typeServices: "Hair & Makeup Services",
+        sortBy: "Sort by",
+        featured: "Featured",
+        priceLowHigh: "Price: Low to High",
+        priceHighLow: "Price: High to Low",
+        ratingHigh: "Most Loved",
+        clearFilters: "Clear Filters",
+        noItemsFound: "No boutique items match your search query.",
+        inStock: "In Stock (Eldoret Hub)",
+        addToCart: "Add to Basket",
+        bookNow: "Book Session",
+        viewDetails: "View Details",
+        cartTitle: "Your Shopping Basket",
+        emptyCartTitle: "Your basket is empty",
+        emptyCartSub: "Browse our clothes, heels, hair, and makeup collection.",
+        subtotal: "Subtotal",
+        taxVat: "Estimated VAT (16%)",
+        totalAmount: "Total Payable",
+        checkoutBtn: "Proceed to M-PESA Checkout",
+        checkoutHeader: "Boutique Checkout & M-PESA Payment",
+        customerInfo: "Customer Information",
+        fullName: "Full Name",
+        email: "Email Address",
+        phoneNumber: "M-PESA Phone Number",
+        phoneHelp: "Enter your Safaricom M-PESA phone number (07XX / 01XX or 254...)",
+        shippingAddress: "Eldoret Delivery Address",
+        serviceDate: "Preferred Appointment Date",
+        notes: "Special Styling Instructions / Shoe Size / Hair Length",
+        mpesaExpress: "M-PESA Express (STK Push Prompt)",
+        mpesaExpressDesc: "Instant prompt sent directly to your phone. Enter PIN to approve.",
+        mpesaPaybill: "Manual M-PESA Paybill / Till Number",
+        mpesaPaybillDesc: "Pay via M-PESA menu using our Business Paybill or Till Number.",
+        placeOrderBtn: "Pay KSh {amount} via M-PESA",
+        stkTitle: "M-PESA Express Prompt",
+        stkStatusWaiting: "Waiting for user PIN entry on handset...",
+        stkSuccessTitle: "Payment Successful!",
+        stkSuccessMsg: "M-PESA payment verified. Transaction code: {code}",
+        viewReceipt: "View Digital Receipt",
+        receiptTitle: "Official ZariBoutique Purchase Receipt",
+        receiptSub: "Keep this receipt for your records and delivery verification.",
+        txCode: "M-PESA Transaction ID",
+        txDate: "Date & Time",
+        statusCompleted: "PAID via M-PESA",
+        printReceipt: "Print / Save PDF",
+        thankYouMsg: "Asante sana for shopping at ZariBoutique Eldoret!",
+        closeBtn: "Close",
+        historyTitle: "Order History & M-PESA Receipts",
+        noHistory: "You have no past orders yet.",
+        orderId: "Order ID"
+      },
+      sw: {
+        brandName: "ZariBoutique",
+        brandSubtitle: "Duka la Nguo, Viatu na Urembo • Eldoret",
+        searchPlaceholder: "Tafuta nguo, viatu, nywele, wanja, mikoba...",
+        allCategories: "Aina Zote",
+        goods: "Nguo na Urembo",
+        services: "Huduma za Makeup",
+        cart: "Kikapu",
+        myOrders: "Orodha ya Oda",
+        language: "Lugha",
+        heroTitle: "Nguo za Kisasa, Nywele, Viatu na Urembo Mjini Eldoret",
+        heroSubtitle: "Nunua magauni ya Ankara, viatu vya kisigino, nywele halisi, wanja za midomo na uweke miadi ya wataalamu Eldoret kwa M-PESA.",
+        shopGoodsBtn: "Tazama Nguo na Viatu",
+        bookServiceBtn: "Weka Miadi ya Urembo",
+        mpesaBadgeText: "Inatumia M-PESA STK Push",
+        typeAll: "Kusanyiko Wote",
+        typeGoods: "Nguo, Viatu na Urembo",
+        typeServices: "Huduma za Nywele na Makeup",
+        sortBy: "Panga kwa",
+        featured: "Mtindo Mpya",
+        priceLowHigh: "Bei: Chini hadi Juu",
+        priceHighLow: "Bei: Juu hadi Chini",
+        ratingHigh: "Zinazopendwa Zaidi",
+        clearFilters: "Odoa Vichujio",
+        noItemsFound: "Hakuna nguo au viatu vinavyolingana na utafutaji wako.",
+        inStock: "Ipo Akibani Eldoret",
+        addToCart: "Weka Kikapuni",
+        bookNow: "Weka Miadi",
+        viewDetails: "Angalia Maelezo",
+        cartTitle: "Kikapu Chako cha Nguo & Urembo",
+        emptyCartTitle: "Kikapu chako kiko tupu",
+        emptyCartSub: "Tazama magauni, viatu, nywele au makeup ili kuongeza.",
+        subtotal: "Jumla Ndogo",
+        taxVat: "Kodi ya VAT (16%)",
+        totalAmount: "Jumla Inayotakiwa Kulipwa",
+        checkoutBtn: "Endelea na Malipo ya M-PESA",
+        checkoutHeader: "Maelezo ya Malipo ya M-PESA",
+        customerInfo: "Taarifa za Mteja",
+        fullName: "Jina Kamili",
+        email: "Barua Pepe",
+        phoneNumber: "Nambari ya M-PESA",
+        phoneHelp: "Weka nambari yako ya Safaricom M-PESA (07XX / 01XX au 254...)",
+        shippingAddress: "Anwani ya Nyumba Eldoret",
+        serviceDate: "Tarehe Unayopendelea Miadi",
+        notes: "Nambari ya Kiatu / Urefu wa Nywele",
+        mpesaExpress: "M-PESA Express (Ujumbe wa STK Push)",
+        mpesaExpressDesc: "Ujumbe wa papo hapo unatumwa kwenye simu yako. Weka PIN kuthibitisha.",
+        mpesaPaybill: "Nambari ya Paybill / Till ya M-PESA",
+        mpesaPaybillDesc: "Lipa kupitia menyu ya M-PESA ukitumia Paybill au Till Number ya Biashara.",
+        placeOrderBtn: "Lipa KSh {amount} kupitia M-PESA",
+        stkTitle: "Ujumbe wa M-PESA Express",
+        stkStatusWaiting: "Inasubiri uweke PIN kwenye simu...",
+        stkSuccessTitle: "Malipo Yamefanikiwa!",
+        stkSuccessMsg: "Malipo ya M-PESA yakaguliwa na kuthibitishwa. Nambari ya muamala: {code}",
+        viewReceipt: "Tazama Stakabadhi ya Kidijitali",
+        receiptTitle: "Stakabadhi Halisi ya ZariBoutique",
+        receiptSub: "Hifadhi stakabadhi hii kwa ajili ya kumbukumbu na kupokea nguo zako Eldoret.",
+        txCode: "Nambari ya Muamala wa M-PESA",
+        txDate: "Tarehe na Saa",
+        statusCompleted: "IMELIPWA kupitia M-PESA",
+        printReceipt: "Chapisha / Hifadhi PDF",
+        thankYouMsg: "Asante sana kwa kufanya manunuzi na ZariBoutique Eldoret!",
+        closeBtn: "Funga",
+        historyTitle: "Kumbukumbu za Oda na Stakabadhi",
+        noHistory: "Bado huna oda zilizopita.",
+        orderId: "Nambari ya Oda"
+      }
+    };
+
+    // --- BOUTIQUE PRODUCTS DATA (BLACK MODELS & ELDORET) ---
+    const productsData = [
+      {
+        id: 'c1', type: 'goods', category: 'clothes',
+        name: { en: 'Zari Royal African Ankara Maxi Dress', sw: 'Gauni Ndefu ya Ankara cha Kifahari cha Zari' },
+        price: 4800, originalPrice: 6200, rating: 4.9, reviewsCount: 148,
+        image: 'https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?auto=format&fit=crop&w=800&q=80',
+        description: { en: 'Vibrant African Ankara print maxi dress with flared sleeves and waist belt modeled on Black woman.', sw: 'Gauni ndefu ya kitambaa cha Ankara yenye mikono ya kuenea na mshipi.' },
+        specs: ['100% Premium Cotton Ankara', 'Includes Waist Belt', 'Tailored in Eldoret']
+      },
+      {
+        id: 'c2', type: 'goods', category: 'clothes',
+        name: { en: 'Elegance Silk Satin Evening Wrap Set', sw: 'Seti ya Hariri (Satin) ya Kike' },
+        price: 5500, originalPrice: 6800, rating: 4.8, reviewsCount: 112,
+        image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80',
+        description: { en: 'Chic two-piece satin wrap blouse with high-waist tailored pants.', sw: 'Seti ya nguo mbili za hariri nyepesi na suruali ya kiwango cha juu.' },
+        specs: ['Silk Satin Blend', 'High Waist Fit', 'Breathable Fabric']
+      },
+      {
+        id: 'sh1', type: 'goods', category: 'shoes',
+        name: { en: 'Eldoret Glam Stiletto Heels (4 Inch)', sw: 'Viatu vya Kike vya Kisigino Kirefu (Stiletto)' },
+        price: 4200, originalPrice: 5000, rating: 4.9, reviewsCount: 176,
+        image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=800&q=80',
+        description: { en: 'Sleek pointed-toe pumps with cushioned insoles for all-day comfort.', sw: 'Viatu vya ncha na kisigino kirefu vyenye pedi laini ndani.' },
+        specs: ['4-Inch Heel Height', 'Padded Cushion', 'Anti-Slip Sole']
+      },
+      {
+        id: 'sh2', type: 'goods', category: 'shoes',
+        name: { en: 'Handcrafted Maasai Leather Mule Sandals', sw: 'Viatu vya Ngozi vya Kimaasai vya Kike' },
+        price: 2900, originalPrice: 3500, rating: 5.0, reviewsCount: 230,
+        image: 'https://images.unsplash.com/photo-1562183241-b937e95585b6?auto=format&fit=crop&w=800&q=80',
+        description: { en: 'Genuine leather slide sandals adorned with fine colorful Maasai beadwork.', sw: 'Viatu vya ngozi halisi vilivyopambwa kwa shanga za Kimaasai.' },
+        specs: ['100% Genuine Leather', 'Hand-Beaded', 'Durable Rubber Sole']
+      },
+      {
+        id: 'h1', type: 'goods', category: 'hair_products',
+        name: { en: 'Raw Peruvian Virgin Human Hair Bundles (3 Pcs)', sw: 'Wigi na Nywele Halisi za Wanawake (Virgin Bundles)' },
+        price: 14500, originalPrice: 17500, rating: 5.0, reviewsCount: 340,
+        image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80',
+        description: { en: '100% unprocessed human hair modeled on Black woman. Silky body wave texture.', sw: 'Bundles 3 za nywele halisi za binadamu pamoja na closure. Hazifungi.' },
+        specs: ['100% Raw Virgin Hair', 'Body Wave', 'Includes 4x4 HD Closure']
+      },
+      {
+        id: 'h2', type: 'goods', category: 'hair_products',
+        name: { en: 'HD Transparent Lace Frontal Bob Wig (12 Inch)', sw: 'Wigi ya HD Lace Frontal Bob (12 Inch)' },
+        price: 11800, originalPrice: 14000, rating: 4.9, reviewsCount: 210,
+        image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+        description: { en: 'Pre-plucked HD lace frontal bob wig with natural hairline for Black women.', sw: 'Wigi fupi ya kisasa ya bob iliyo tayari kuvaliwa yenye lace ya asili kabisa.' },
+        specs: ['13x4 HD Lace Frontal', 'Pre-Plucked Hairline', 'Glueless Cap']
+      },
+      {
+        id: 'l1', type: 'goods', category: 'lipsticks_makeup',
+        name: { en: 'Velvet Matte Long-Wear Liquid Lipstick Set', sw: 'Seti ya Wanja na Rangi za Midomo (Matte Lipsticks)' },
+        price: 3200, originalPrice: 4000, rating: 4.8, reviewsCount: 190,
+        image: 'https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=800&q=80',
+        description: { en: 'Non-drying, transfer-proof matte lipsticks specifically formulated for dark skin and melanin beauty.', sw: 'Rangi za midomo zenye kukausha vizuri maalum kwa ngozi ya kiafrika.' },
+        specs: ['16-Hour Longwear', 'Waterproof Formula', '6 Melanin Shades']
+      },
+      {
+        id: 'b1', type: 'goods', category: 'bags_accessories',
+        name: { en: 'Luxury Structured Leather Crossbody Bag', sw: 'Mkoba wa Ngozi wa Kifahari wa Kike' },
+        price: 5200, originalPrice: 6500, rating: 4.9, reviewsCount: 155,
+        image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=800&q=80',
+        description: { en: 'Elegant premium leather handbag with gold chain strap, modeled by stylish Black woman.', sw: 'Mkoba wa ngozi bora wenye mnyororo wa dhahabu na kufuli la sumaku.' },
+        specs: ['Genuine Vegan Leather', 'Gold Hardware', 'Dust Bag Included']
+      },
+      {
+        id: 'bs1', type: 'services', category: 'beauty_services',
+        name: { en: 'Full Glam Makeup & Hairstyling Session', sw: 'Huduma ya Kupambwa Uso na Kutengenezwa Nywele Eldoret' },
+        price: 6000, originalPrice: 8000, rating: 5.0, reviewsCount: 260,
+        image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+        description: { en: 'Full face glam makeup application on Black women plus hair styling or wig install in Eldoret CBD.', sw: 'Huduma kamili ya kupambwa uso na mtaalamu Eldoret ikiwemo kope na nywele.' },
+        specs: ['Includes 3D Mink Lashes', 'Skin Prep', 'Studio in Eldoret CBD']
+      }
+    ];
+
+    const categoriesData = [
+      { id: 'all', label: { en: 'All Items', sw: 'Vitu Vyote' } },
+      { id: 'clothes', label: { en: 'Clothes & Dresses', sw: 'Nguo na Magauni' } },
+      { id: 'shoes', label: { en: 'Shoes & Heels', sw: 'Viatu na Visigino' } },
+      { id: 'hair_products', label: { en: 'Hair & Wigs', sw: 'Nywele na Wigi' } },
+      { id: 'lipsticks_makeup', label: { en: 'Lipsticks & Makeup', sw: 'Wanja na Wanawake' } },
+      { id: 'bags_accessories', label: { en: 'Bags & Jewelry', sw: 'Mikoba na Cheni' } },
+      { id: 'beauty_services', label: { en: 'Glam Services', sw: 'Huduma za Urembo' } },
+    ];
+
+    // --- MAIN BOUTIQUE APP ---
+    function ZariBoutiqueApp() {
+      const [lang, setLang] = useState('en');
+      const [searchQuery, setSearchQuery] = useState('');
+      const [activeTypeFilter, setActiveTypeFilter] = useState('all');
+      const [selectedCategory, setSelectedCategory] = useState('all');
+      const [cart, setCart] = useState([]);
+      const [isCartOpen, setIsCartOpen] = useState(false);
+      const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+      const [isLivePushStatusOpen, setIsLivePushStatusOpen] = useState(false);
+      const [isReceiptOpen, setIsReceiptOpen] = useState(false);
+      const [activeOrder, setActiveOrder] = useState(null);
+      const [activeReceipt, setActiveReceipt] = useState(null);
+
+      const t = (key, params = {}) => {
+        let val = translations[lang][key] || translations['en'][key] || key;
+        if (typeof val === 'string' && params) {
+          Object.keys(params).forEach(k => { val = val.replace(`{${k}}`, params[k]); });
+        }
+        return val;
+      };
+
+      const addToCart = (product) => {
+        setCart(prev => {
+          const idx = prev.findIndex(item => item.id === product.id);
+          if (idx > -1) {
+            const updated = [...prev];
+            updated[idx].quantity += 1;
+            return updated;
+          }
+          return [...prev, { ...product, quantity: 1 }];
+        });
+      };
+
+      const cartSubtotal = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+      const grandTotal = Math.round(cartSubtotal * 1.16);
+
+      const filteredProducts = productsData.filter(item => {
+        if (activeTypeFilter !== 'all' && item.type !== activeTypeFilter) return false;
+        if (selectedCategory !== 'all' && item.category !== selectedCategory) return false;
+        if (searchQuery.trim()) {
+          const q = searchQuery.toLowerCase().trim();
+          const nameEn = (item.name.en || '').toLowerCase();
+          const nameSw = (item.name.sw || '').toLowerCase();
+          const descEn = (item.description.en || '').toLowerCase();
+          const descSw = (item.description.sw || '').toLowerCase();
+          const category = (item.category || '').toLowerCase();
+          const specs = (item.specs || []).join(' ').toLowerCase();
+
+          return (
+            nameEn.includes(q) ||
+            nameSw.includes(q) ||
+            descEn.includes(q) ||
+            descSw.includes(q) ||
+            category.includes(q) ||
+            specs.includes(q)
+          );
+        }
+        return true;
+      });
+
+      return (
+        <div className="min-h-screen flex flex-col">
+          {/* Header */}
+          <header className="bg-white border-b border-rose-100 sticky top-0 z-30 shadow-sm">
+            <div className="bg-gradient-to-r from-rose-950 via-purple-950 to-slate-900 text-white text-xs py-1.5 px-4 flex justify-between font-semibold">
+              <span>📍 ZariBoutique Eldoret • Safaricom M-PESA STK Push Live Gateway</span>
+              <span>Language: {lang === 'en' ? 'English' : 'Kiswahili'}</span>
+            </div>
+
+            <div className="container mx-auto px-4 py-3.5 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-500 to-purple-600 text-white font-black text-xl flex items-center justify-center font-serif shadow-md">Z</div>
+                <div>
+                  <h1 className="font-black text-xl text-gray-900 leading-none font-serif">Zari<span className="text-rose-600">Boutique</span></h1>
+                  <p className="text-[10px] text-gray-500 font-medium">{t('brandSubtitle')}</p>
+                </div>
+              </div>
+
+              {/* Live Search Input */}
+              <div className="flex-1 max-w-md relative">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  placeholder={t('searchPlaceholder')}
+                  className="w-full px-4 py-2 pr-8 bg-rose-50/50 border border-rose-200 rounded-full text-xs font-medium focus:ring-2 focus:ring-rose-500 focus:outline-none"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400 hover:text-gray-700"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setLang(l => l === 'en' ? 'sw' : 'en')}
+                  className="px-3.5 py-1.5 bg-rose-50 border border-rose-200 text-rose-800 rounded-full text-xs font-bold shadow-sm"
+                >
+                  🌐 {lang === 'en' ? '🇺🇸 EN' : '🇰🇪 SW'}
+                </button>
+
+                <button
+                  onClick={() => setIsCartOpen(true)}
+                  className="px-4 py-2 bg-rose-600 text-white rounded-full text-xs font-bold flex items-center gap-1.5 shadow-md shadow-rose-600/20"
+                >
+                  🛍️ {t('cart')} ({cart.reduce((sum, i) => sum + i.quantity, 0)})
+                </button>
+              </div>
+            </div>
+
+            {/* Category Pills Bar */}
+            <div className="bg-rose-50/30 border-t border-rose-100 px-4 py-2">
+              <div className="container mx-auto flex items-center gap-2 overflow-x-auto no-scrollbar">
+                {categoriesData.map(cat => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setSelectedCategory(cat.id)}
+                    className={`px-3.5 py-1 rounded-xl text-xs font-semibold whitespace-nowrap transition ${selectedCategory === cat.id ? 'bg-rose-600 text-white shadow-sm' : 'bg-white border text-gray-700 hover:bg-rose-50'}`}
+                  >
+                    {cat.label[lang] || cat.label.en}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </header>
+
+          {/* Hero Banner */}
+          <div className="bg-gradient-to-r from-rose-950 via-purple-950 to-slate-900 text-white py-10 px-6 text-center my-6 container mx-auto rounded-3xl shadow-xl border border-rose-900">
+            <span className="bg-white/10 text-rose-200 text-[10px] font-bold uppercase px-3.5 py-1 rounded-full border border-white/10">
+              📍 Eldoret City's Premier Glam Boutique
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black font-serif mt-3">{t('heroTitle')}</h2>
+            <p className="text-xs text-rose-100/90 max-w-lg mx-auto mt-2 leading-relaxed">{t('heroSubtitle')}</p>
+          </div>
+
+          {/* Products Grid */}
+          <main className="container mx-auto px-4 flex-1">
+            {filteredProducts.length === 0 ? (
+              <div className="bg-white border border-rose-100 rounded-3xl p-12 text-center space-y-3">
+                <p className="font-bold text-gray-800">{t('noItemsFound')}</p>
+                <button onClick={() => { setSearchQuery(''); setSelectedCategory('all'); setActiveTypeFilter('all'); }} className="px-4 py-2 bg-rose-600 text-white font-bold text-xs rounded-xl">
+                  Clear Filters
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {filteredProducts.map(product => (
+                  <div key={product.id} className="bg-white border border-rose-100 rounded-2xl p-4 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+                    <div>
+                      <img src={product.image} className="w-full h-48 object-cover rounded-xl mb-3" />
+                      <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-100">
+                        {product.type === 'services' ? 'Glam Service' : 'Fashion Goods'}
+                      </span>
+                      <h3 className="font-bold text-sm text-gray-900 mt-2">{product.name[lang] || product.name.en}</h3>
+                      <p className="text-xs text-gray-500 mt-1 leading-snug">{product.description[lang] || product.description.en}</p>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-rose-100 flex justify-between items-center">
+                      <span className="font-black text-rose-600 text-base">KSh {product.price.toLocaleString()}</span>
+                      <button
+                        onClick={() => addToCart(product)}
+                        className="px-3.5 py-1.5 bg-rose-600 text-white text-xs font-bold rounded-xl hover:bg-rose-700 transition"
+                      >
+                        {product.type === 'services' ? t('bookNow') : t('addToCart')}
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </main>
+
+          {/* Cart Drawer */}
+          {isCartOpen && (
+            <div className="fixed inset-0 bg-black/60 z-50 flex justify-end">
+              <div className="w-full max-w-md bg-white h-full p-5 flex flex-col justify-between shadow-2xl">
+                <div>
+                  <div className="flex justify-between items-center border-b pb-3">
+                    <h3 className="font-black text-base">{t('cartTitle')}</h3>
+                    <button onClick={() => setIsCartOpen(false)} className="font-bold text-gray-400 hover:text-gray-900">✕</button>
+                  </div>
+                  <div className="space-y-3 mt-4">
+                    {cart.map(item => (
+                      <div key={item.id} className="flex justify-between text-xs border-b pb-2">
+                        <div>
+                          <p className="font-bold">{item.name[lang]}</p>
+                          <p className="text-gray-500">Qty: {item.quantity}</p>
+                        </div>
+                        <span className="font-bold text-rose-600">KSh {(item.price * item.quantity).toLocaleString()}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="border-t pt-4 space-y-3">
+                  <div className="flex justify-between text-sm font-black">
+                    <span>{t('totalAmount')}</span>
+                    <span className="text-rose-600 text-lg">KSh {grandTotal.toLocaleString()}</span>
+                  </div>
+                  <button
+                    onClick={() => { setIsCartOpen(false); setIsCheckoutOpen(true); }}
+                    className="w-full py-3 bg-rose-600 text-white font-bold rounded-xl text-xs shadow-md shadow-rose-600/20"
+                  >
+                    {t('checkoutBtn')}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Checkout Modal */}
+          {isCheckoutOpen && (
+            <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+              <div className="bg-white p-6 rounded-3xl max-w-md w-full space-y-4 shadow-2xl">
+                <div className="flex justify-between border-b pb-3">
+                  <h3 className="font-black text-base">{t('checkoutHeader')}</h3>
+                  <button onClick={() => setIsCheckoutOpen(false)}>✕</button>
+                </div>
+
+                <div className="space-y-3 text-xs">
+                  <div>
+                    <label className="font-bold text-gray-700 block mb-1">{t('phoneNumber')}</label>
+                    <input type="text" defaultValue="0791781961" id="checkoutPhoneInput" className="w-full p-2.5 bg-rose-50/50 border border-rose-200 rounded-xl font-bold text-sm" />
+                  </div>
+                  <div>
+                    <label className="font-bold text-gray-700 block mb-1">{t('notes')}</label>
+                    <input type="text" placeholder="e.g. Size 38 shoes, 22-inch wig length, Uganda Road Eldoret" className="w-full p-2.5 bg-gray-50 border rounded-xl" />
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => {
+                    const phone = document.getElementById('checkoutPhoneInput').value || '0791781961';
+                    setIsCheckoutOpen(false);
+                    setActiveOrder({ totalAmount: grandTotal, customerPhone: phone });
+                    setIsLivePushStatusOpen(true);
+                  }}
+                  className="w-full py-3.5 bg-mpesa-green text-white font-bold rounded-2xl text-xs shadow-md"
+                >
+                  Pay KSh {grandTotal.toLocaleString()} via M-PESA STK Push
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Live Handset Status Overlay */}
+          {isLivePushStatusOpen && (
+            <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+              <div className="bg-white p-6 rounded-3xl max-w-sm w-full text-center space-y-4 shadow-2xl border border-emerald-200">
+                <div className="w-12 h-12 bg-mpesa-green text-white rounded-2xl flex items-center justify-center mx-auto text-xl font-bold shadow-md">📱</div>
+                <h3 className="font-black text-base">M-PESA STK Push Sent!</h3>
+                <div className="bg-emerald-50 p-3.5 rounded-2xl text-xs text-left space-y-1.5 border border-emerald-200">
+                  <p><span className="text-gray-500">Destination Phone:</span> <b className="text-mpesa-green font-mono text-sm">{activeOrder?.customerPhone}</b></p>
+                  <p><span className="text-gray-500">Amount:</span> <b>KSh {activeOrder?.totalAmount?.toLocaleString()}</b></p>
+                  <p className="text-[11px] text-emerald-900 pt-1 border-t border-emerald-200">
+                    A Safaricom M-PESA STK prompt has been dispatched to <b>{activeOrder?.customerPhone}</b>. Please check your phone screen right now and enter your M-PESA PIN to complete payment to ZariBoutique.
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => {
+                    const code = 'RJK' + Math.random().toString(36).substring(2, 8).toUpperCase();
+                    setActiveReceipt({ code, amount: activeOrder?.totalAmount, date: new Date().toLocaleString() });
+                    setIsLivePushStatusOpen(false);
+                    setIsReceiptOpen(true);
+                    setCart([]);
+                  }}
+                  className="w-full py-3 bg-mpesa-green text-white font-bold rounded-xl text-xs shadow-md"
+                >
+                  I Have Entered PIN on Phone (View Digital Receipt)
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Digital Receipt Modal */}
+          {isReceiptOpen && (
+            <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+              <div className="bg-white p-6 rounded-3xl max-w-sm w-full text-center space-y-3 shadow-2xl">
+                <div className="w-12 h-12 bg-emerald-100 text-mpesa-green rounded-full flex items-center justify-center mx-auto text-xl font-bold">✓</div>
+                <h3 className="font-black text-lg">{t('stkSuccessTitle')}</h3>
+                <div className="bg-rose-50/50 p-3.5 rounded-2xl text-xs font-mono text-left space-y-1.5 border border-rose-100">
+                  <p><span className="text-gray-500">M-PESA Code:</span> <b className="text-rose-600">{activeReceipt?.code}</b></p>
+                  <p><span className="text-gray-500">Amount:</span> <b>KSh {activeReceipt?.amount?.toLocaleString()}</b></p>
+                  <p><span className="text-gray-500">Date:</span> {activeReceipt?.date}</p>
+                </div>
+                <button
+                  onClick={() => setIsReceiptOpen(false)}
+                  className="w-full py-2.5 bg-gray-900 text-white font-bold rounded-xl text-xs"
+                >
+                  {t('closeBtn')}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Footer */}
+          <footer className="bg-slate-950 text-gray-400 text-xs py-8 mt-12 text-center border-t border-rose-950">
+            <p>© 2026 ZariBoutique Eldoret • Safaricom Daraja API Gateway</p>
+          </footer>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<ZariBoutiqueApp />);
+  </script>
+</body>
+</html>
